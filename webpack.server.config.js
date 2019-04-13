@@ -22,8 +22,8 @@ module.exports = (env, argv) => ({
   resolve: {
     alias: {
       server: path.resolve(__dirname, "src/server"),
-      Framework: path.resolve(__dirname, "src/framework"),
-      Domains: path.resolve(__dirname, "src/domains")
+      framework: path.resolve(__dirname, "src/framework"),
+      domains: path.resolve(__dirname, "src/domains")
     }
   },
   module: {

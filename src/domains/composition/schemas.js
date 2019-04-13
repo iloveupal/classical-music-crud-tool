@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { AVAILABLE_KEYS } from "Framework/constants/keys";
+import { AVAILABLE_KEYS } from "framework/constants/keys";
 
 export const compositionsFilterSchema = {
   text: Joi.string(),

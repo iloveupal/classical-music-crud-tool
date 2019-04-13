@@ -83,7 +83,7 @@ module.exports = {
   resolve: {
     alias: {
       Framework: path.resolve(__dirname, "src/framework"),
-      Domains: path.resolve(__dirname, "src/domains")
+      domains: path.resolve(__dirname, "src/domains")
     }
   }
 };

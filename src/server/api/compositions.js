@@ -1,7 +1,7 @@
 import express from "express";
 import validator from "express-joi-validator";
 
-import { apiListCompositionsSchema } from "Domains/composition/schemas";
+import { apiListCompositionsSchema } from "domains/composition/schemas";
 
 import {
   filterCompositions,
