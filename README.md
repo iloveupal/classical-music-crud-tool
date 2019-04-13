@@ -29,13 +29,14 @@ for me, with an ability to correct it, of course.
 
 * **Adding/editing a composition**
 The app will have a create/update screen. Fields are:
-    1. Composer `string, required`
-    2. Title `string, required`
-    3. Movements `array`
-        1. Name `string` — can be omitted.
-        2. Performers (name, type) `Map required`
-        3. Year recorded `number required`
-        4. Key (would be useful for filtering) `string required`
+    * Composer `string, required`
+    * Title `string, required`
+    * Movements `array`
+        1. Title `string`
+        2. Key `string`
+        3. Recordings `array`
+            * Performers (name, type) `array`
+            * Year recorded `number`
         
     We should be able to upload music files in a batch.
     Also we should check if the files are music files.
@@ -49,12 +50,12 @@ I would like to view all of my created compositions.
     2. Filter them by multiple criteria. As it is an internal tooling,
     probably it would be good to be able to filter entities directly in the search field
     with some smart query parsing. For example,
-    `Title:Sonata,Key:fm,Composer:Beethoven`
+    `Title=Sonata;Key=fm;Composer=Beethoven`
     
 ### Choosing fighters
 
 1. For the frontend, **React** seems a perfect choice. Opposed
- to jQuery-driven development, it is much easier to maintain scalability and clean code. Also the community is huge.
+to jQuery-driven development, it is much easier to maintain scalability and clean code. Also the community is huge.
  
 2. For the backend, **node.js, express** seems a good match. Why? Because
 it will allows us to have a shared codebase. For example, we can write a validation schema
@@ -62,9 +63,259 @@ and use it on the frontend while we validate our form and on the backend when we
 a new request. 
 
 3. For the database, I will use **MongoDB** because it operates with
- javascript objects opposed to tables and columns like SQL.
-  It also supports full text search which we need.
+javascript objects opposed to tables and columns like SQL.
+It also supports full text search which we need.
 
 4. **Docker** so that we can easily deploy this.
 
-5. For tests, we'll use **jest**
+5. For tests, we'll use **jest**.
+It has a clean api and it has integrations with technologies that we are using.
+
+### API
+
+#### READ
+
+Now that we've designed the requirements, we can proceed to api.
+
+**`GET /compositions`**
+
+List or filter compositions.
+
+**Query parameters:**
+
+```javascript
+/**
+
+@type {string} Filter A key to filter by.
+@type {string} FilterValue A value to filter by.
+
+@param search {Map<Filter, FilterValue>} Filters to apply.
+    
+    Composition filters:
+        title — partial match
+        composer — partial match
+    Movement filters:
+        m_title - partial match.
+        key — just a regular key like: a#, b, c#m, dm. exact match
+    Recording filters:
+        performer - partial match
+        instrument - partial match
+        year - exact match
+
+@param limit {number} Number of entities to return, default 50.
+
+@param prev_page_marker {string} Used for pagination.
+
+@param sort {string} Sorting key
+    Possible values:
+        most_recent
+        title
+        composer
+**/
+```
+
+**Returns:**
+
+Returns matching compositions with movements and recordings inside.
+Will also return an object with filters.
+
+**Examples:** 
+
+Let's say we filter only by title.
+
+    title=moonlight
+
+```javascript
+    {
+        success: true,
+        errors: [],
+        filters: {
+            title: 'moonlight'
+        },
+        // total amount of results for this query.
+        total: 1,
+        results: [
+             {
+                 // the composition itself
+                 id: '<some random id>',
+                 type: 'composition',
+                 title: 'Sonata No. 14 — Moonlight Sonata',
+                 composer: 'Ludwig van Beethoven',
+                 movements_count: 3,
+                 // because no filters for movements were used,
+                 // they're going to be omitted.
+                 movements: [{...}, {...}, {...}],
+             },
+        ]
+    }
+```
+
+If we request for
+    
+    title=moonlight;m_title=allegretto
+
+```javascript
+    {
+        success: true,
+        errors: [],
+        filters: {
+            title: 'moonlight',
+            m_title: 'allegretto',
+        },
+        // total amount of results for this query.
+        total: 1,
+        results: [
+             {
+                 // the composition itself
+                 id: '<some random id>',
+                 type: 'composition',
+                 title: 'Sonata No. 14 — Moonlight Sonata',
+                 composer: 'Ludwig van Beethoven',
+                 movements_count: 3,
+                 // because no filters for movements were used,
+                 // they're going to be omitted.
+                 movements: [{
+                     id: '<some random id>',
+                     title: 'II. Allegretto',
+                     key: 'c#',
+                     recordings_count: 2,
+                     // no recording filters - no data about recordings.
+                     recordings: [{...}, {...}],
+                 }],
+             },
+        ]
+    }
+```
+
+If we request for
+    
+    title=moonlight;m_title=allegretto;performer=perahia
+    
+```javascript
+    {
+        success: true,
+        errors: [],
+        filters: {
+            title: 'moonlight',
+            m_title: 'allegretto',
+        },
+        // total amount of results for this query.
+        total: 1,
+        results: [
+             {
+                 // the composition itself
+                 id: '<some random id>',
+                 type: 'composition',
+                 title: 'Sonata No. 14 — Moonlight Sonata',
+                 composer: 'Ludwig van Beethoven',
+                 movements_count: 3,
+                 // because no filters for movements were used,
+                 // they're going to be omitted.
+                 movements: [{
+                     id: '<some random id>',
+                     title: 'II. Allegretto',
+                     key: 'c#',
+                     recordings_count: 2,
+                     // no recording filters - no data about recordings.
+                     recordings: [{
+                         id: '<some random id>',
+                         performers: [
+                             {
+                                 name: 'Murray Perahia',
+                                 type: 'piano',
+                             }
+                         ],
+                         year: 2018
+                     }],
+                 }],
+             },
+        ]
+    }
+```
+
+**`GET /compositions/:id`**
+
+Gets the whole composition with its movements and recordings.
+
+**Returns:**
+
+```javascript
+{
+     id: '<some random id>',
+     type: 'composition',
+     title: 'Sonata No. 14 — Moonlight Sonata',
+     composer: 'Ludwig van Beethoven',
+     movements_count: 3,
+     // because no filters for movements were used,
+     // they're going to be omitted.
+     movements: [{...}, {...}, {...}],
+}
+```
+
+#### DELETE
+
+**`DELETE /compositions/:id`**
+
+**`DELETE /movements/:id`**
+
+**`DELETE /recordings/:id`**
+
+#### UPDATE
+
+**`PUT /compositions/:id`**
+
+```javascript
+{
+    title,
+    composer 
+}
+```
+
+**`PUT /movements/:id`**
+
+```javascript
+{
+    title,
+    key
+}
+```
+
+**`PUT /recordings/:id`**
+
+```javascript
+{
+    performers,
+    year
+}
+```
+
+#### CREATE
+
+**`POST /compositions`**
+
+```javascript
+{
+    title,
+    composer 
+}
+```
+
+**`POST /movements`**
+
+```javascript
+{
+    title,
+    key,
+    parent: <composition id>
+}
+```
+
+**`POST /recordings`**
+
+```javascript
+{
+    year,
+    performers,
+    parent: <movement id>
+}
+```
