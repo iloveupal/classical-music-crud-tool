@@ -2,7 +2,7 @@
 
 a little tool to manage a classical music collection.
 
-###Requirements
+### Requirements
 
 I suppose that the purpose of this test assignment is to emulate a work on 
 an internal tooling for Idagio. As for internal tooling, I thought
@@ -25,7 +25,7 @@ admin dashboard eventually. It is always good to ensure scalability, in my opini
 I would like to have the metadata be automatically parsed
 for me, with an ability to correct it, of course.
 
-###Design
+### Design
 
 * **Adding/editing a composition**
 The app will have a create/update screen. Fields are:
