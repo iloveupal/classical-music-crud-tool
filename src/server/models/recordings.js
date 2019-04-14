@@ -1,10 +1,12 @@
 import { get } from "server/ioc";
 
 import {
-  safeObjectId,
-  constructEqQuery,
-  constructAndQuery
-} from "server/utils/database";
+  __find,
+  __findOneById,
+  __insertOne,
+  __updateOneById,
+  __deleteOneById
+} from "./generics/crud";
 
 const db = get("db");
 
@@ -44,6 +46,8 @@ Recordings.createIndexes([
   }
 ]);
 
-export function find(query) {
-  return Recordings.find(query).toArray();
-}
+export const findOneById = __findOneById(Recordings);
+export const find = __find(Recordings);
+export const create = __insertOne(Recordings);
+export const updateOneById = __updateOneById(Recordings);
+export const deleteOneById = __deleteOneById(Recordings);

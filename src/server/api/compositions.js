@@ -1,3 +1,4 @@
+import boom from "boom";
 import express from "express";
 import validator from "express-joi-validator";
 
@@ -61,6 +62,11 @@ api.put(
   validator(apiUpdateCompositionSchema),
   (req, res, next) => {
     const { body, params } = req;
+
+    // useless update
+    if (!Object.keys(body).length) {
+      return next(boom.badRequest());
+    }
 
     updateComposition(params.id, body)
       .then(result => res.send(result))

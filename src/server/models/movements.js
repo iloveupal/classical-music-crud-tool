@@ -5,6 +5,13 @@ import { get } from "server/ioc";
 import { constructAndQuery } from "server/utils/database";
 
 import { buildParentQuery } from "./query-builders/movementQueryBuilders";
+import {
+  __find,
+  __findOneById,
+  __insertOne,
+  __updateOneById,
+  __deleteOneById
+} from "./generics/crud";
 
 import { find as findRecordings } from "./recordings";
 
@@ -27,9 +34,11 @@ Movements.createIndexes([
   }
 ]);
 
-export function find(query) {
-  return Movements.find(query).toArray();
-}
+export const findOneById = __findOneById(Movements);
+export const find = __find(Movements);
+export const create = __insertOne(Movements);
+export const updateOneById = __updateOneById(Movements);
+export const deleteOneById = __deleteOneById(Movements);
 
 export function hydrateMovements(movements, queryForRecordings = []) {
   return asyncmap(movements, movement =>
