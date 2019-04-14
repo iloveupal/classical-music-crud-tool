@@ -23,3 +23,10 @@ export const apiListCompositionsSchema = {
     sort: Joi.string()
   }
 };
+
+export const apiPostCompositionSchema = {
+  body: {
+    title: Joi.string(),
+    composer: Joi.string()
+  }
+};

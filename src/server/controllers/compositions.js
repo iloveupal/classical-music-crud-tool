@@ -6,7 +6,8 @@ import {
   findOneById,
   hydrateComposition,
   hydrateCompositions,
-  find
+  find,
+  create
 } from "server/models/compositions";
 
 import { buildTextQuery as buildCompositionTextQuery } from "server/models/query-builders/compositionQueryBuilders";
@@ -83,4 +84,8 @@ export function filterCompositions({ offset, limit, search = {} }) {
       return compositions;
     })
     .then(wrapArrayResult({ offset, limit }));
+}
+
+export function createCompositionOrThrow({ title, composer }) {
+  return create({ title, composer }).then(wrapResult);
 }

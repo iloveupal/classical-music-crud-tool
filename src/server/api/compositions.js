@@ -1,15 +1,22 @@
 import express from "express";
 import validator from "express-joi-validator";
 
-import { apiListCompositionsSchema } from "domains/composition/schemas";
+import bodyParser from "body-parser";
+
+import {
+  apiListCompositionsSchema,
+  apiPostCompositionSchema
+} from "domains/composition/schemas";
 
 import {
   filterCompositions,
   listCompositions,
-  getCompositionOrThrow
+  getCompositionOrThrow,
+  createCompositionOrThrow
 } from "server/controllers/compositions";
 
 const api = express();
+const jsonParser = bodyParser.json();
 
 api.get("/", validator(apiListCompositionsSchema), (req, res, next) => {
   const { query } = req;
@@ -31,5 +38,18 @@ api.get("/:id", (req, res, next) => {
     .then(result => res.send(result))
     .catch(error => next(error));
 });
+
+api.post(
+  "/",
+  jsonParser,
+  validator(apiPostCompositionSchema),
+  (req, res, next) => {
+    const { body } = req;
+
+    createCompositionOrThrow(body)
+      .then(result => res.send(result))
+      .catch(error => next(error));
+  }
+);
 
 export default api;

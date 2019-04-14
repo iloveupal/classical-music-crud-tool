@@ -18,6 +18,12 @@ Movements.createIndexes([
       title: "text"
     },
     name: "text-index"
+  },
+  {
+    key: {
+      parent: 1
+    },
+    name: "parent-index"
   }
 ]);
 

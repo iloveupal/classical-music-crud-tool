@@ -30,6 +30,10 @@ export function find(query) {
   return Compositions.find(query).toArray();
 }
 
+export function create(body) {
+  return Compositions.insertOne(body).then(result => result.insertedId);
+}
+
 export function hydrateComposition(
   composition,
   queriesForMovement = [],
