@@ -62,7 +62,7 @@ api.put(
   (req, res, next) => {
     const { body, params } = req;
 
-    updateCompositionOrThrow(params.id, body)
+    updateComposition(params.id, body)
       .then(result => res.send(result))
       .catch(error => next(error));
   }

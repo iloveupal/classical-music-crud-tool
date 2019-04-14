@@ -39,7 +39,7 @@ export function updateOneById(id, body) {
   return Compositions.updateOne(
     { _id: safeObjectId(id) },
     constructSetQuery(body)
-  ).then(({ result }) => ({ written: result.nModified, ok: result.ok }));
+  ).then(({ result }) => ({ updated: result.nModified, ok: result.ok }));
 }
 
 export function deleteOneById(id) {

@@ -102,12 +102,12 @@ export function createCompositionOrThrow({ title, composer }) {
 
 export function updateComposition(id, { title, composer }) {
   return updateOneById(id, _pickBy({ title, composer })).then(
-    ({ written, ok }) => {
+    ({ updated, ok }) => {
       if (!ok) {
         return Promise.reject(boom.serverUnavailable());
       }
 
-      return wrapResult({ written, ok });
+      return wrapResult({ updated, ok });
     }
   );
 }
