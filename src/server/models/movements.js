@@ -1,14 +1,12 @@
 import { asyncmap } from "asyncbox";
 
 import { get } from "server/ioc";
-import {
-  safeObjectId,
-  constructEqQuery,
-  constructAndQuery
-} from "server/utils/database";
+
+import { constructAndQuery } from "server/utils/database";
+
+import { buildParentQuery } from "./query-builders/movementQueryBuilders";
 
 import { find as findRecordings } from "./recordings";
-import { Compositions } from "./compositions";
 
 const db = get("db");
 
@@ -35,10 +33,7 @@ export function hydrateMovements(movements, queryForRecordings = []) {
 
 export function hydrateMovement(movement, queryForRecordings = []) {
   return findRecordings(
-    constructAndQuery([
-      constructEqQuery("parent", movement._id),
-      ...queryForRecordings
-    ])
+    constructAndQuery([buildParentQuery(movement._id), ...queryForRecordings])
   ).then(recordings => ({
     ...movement,
     recordings

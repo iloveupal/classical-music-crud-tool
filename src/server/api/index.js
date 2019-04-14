@@ -2,6 +2,8 @@ import assert from "assert";
 
 import express from "express";
 
+import { wrapErrors } from "server/utils/api";
+
 import compositionsApi from "./compositions";
 import movementsApi from "./movements";
 import recordingsApi from "./recordings";
@@ -10,7 +12,9 @@ const api = express();
 
 function handleErrors(err, req, res, next) {
   if (err.isBoom) {
-    return res.status(err.output.statusCode).json(err.output.payload);
+    return res
+      .status(err.output.statusCode)
+      .json(wrapErrors([err.output.payload]));
   } else {
     assert.fail(err);
   }

@@ -1,3 +1,5 @@
+import { asyncmap } from "asyncbox";
+
 import { get } from "server/ioc";
 import {
   safeObjectId,
@@ -24,6 +26,10 @@ export function findOneById(id) {
   return Compositions.findOne({ _id: safeObjectId(id) });
 }
 
+export function find(query) {
+  return Compositions.find(query).toArray();
+}
+
 export function hydrateComposition(
   composition,
   queriesForMovement = [],
@@ -39,4 +45,14 @@ export function hydrateComposition(
     .then(movements => {
       return { ...composition, movements };
     });
+}
+
+export function hydrateCompositions(
+  compositions,
+  queriesForMovement = [],
+  queriesForRecording = []
+) {
+  return asyncmap(compositions, composition =>
+    hydrateComposition(composition, queriesForMovement, queriesForRecording)
+  );
 }

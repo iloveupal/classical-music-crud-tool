@@ -1,15 +1,80 @@
 import boom from "boom";
 
-import { findOneById, hydrateComposition } from "server/models/compositions";
+import { wrapResult, wrapArrayResult } from "server/utils/api";
+
+import {
+  findOneById,
+  hydrateComposition,
+  hydrateCompositions,
+  find
+} from "server/models/compositions";
+
+import { buildTextQuery as buildCompositionTextQuery } from "server/models/query-builders/compositionQueryBuilders";
+
+import {
+  buildKeyQuery,
+  buildTextQuery as buildMovementTextQuery
+} from "server/models/query-builders/movementQueryBuilders";
+
+import {
+  buildPerformerQuery,
+  buildTypeQuery,
+  buildYearQuery
+} from "server/models/query-builders/recordingQueryBuilders";
 
 export function getCompositionOrThrow(id) {
-  return findOneById(id).then(item => {
-    if (!item) {
-      return Promise.reject(boom.notFound());
-    }
+  return findOneById(id)
+    .then(item => {
+      if (!item) {
+        return Promise.reject(boom.notFound());
+      }
 
-    return hydrateComposition(item);
-  });
+      return hydrateComposition(item);
+    })
+    .then(wrapResult);
 }
 
-export function filterCompositions({ offset, limit, sort, search }) {}
+export function filterCompositions({ offset, limit, sort, search = {} }) {
+  const { text, movement, key, performer, type, year } = search;
+
+  return find(buildCompositionTextQuery(text))
+    .then(compositions =>
+      hydrateCompositions(
+        compositions,
+        [buildKeyQuery(key), buildMovementTextQuery(movement)],
+        [
+          buildPerformerQuery(performer),
+          buildTypeQuery(type),
+          buildYearQuery(year)
+        ]
+      )
+    )
+    .then(compositions => {
+      // if no search was performed on Composition entity itself, we are free to remove those
+      // compositions that are not relevant to our search.
+      if (!text) {
+        return compositions.filter(composition => {
+          // if no filters are concerned with Movement entity, check if movements
+          if (!key && !movement) {
+            composition.movements = composition.movements.filter(movement => {
+              if (!movement.recordings.length) {
+                return null;
+              }
+
+              return movement;
+            });
+          }
+
+          // if no movements, => this is not the composition we're looking for.
+          if (!composition.movements.length) {
+            return null;
+          }
+
+          return composition;
+        });
+      }
+
+      return compositions;
+    })
+    .then(wrapArrayResult({ offset, limit }));
+}

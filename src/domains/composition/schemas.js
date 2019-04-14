@@ -3,9 +3,10 @@ import { AVAILABLE_KEYS } from "framework/constants/keys";
 
 export const compositionsFilterSchema = {
   text: Joi.string(),
+  movement: Joi.string(),
   key: Joi.string().valid(AVAILABLE_KEYS),
   performer: Joi.string(),
-  instrument: Joi.string(),
+  type: Joi.string(),
   year: Joi.number()
     .min(1500)
     .max(new Date().getFullYear())
