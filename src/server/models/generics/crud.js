@@ -12,7 +12,7 @@ export const __updateOneById = collection => (id, body) =>
   collection
     .updateOne({ _id: safeObjectId(id) }, constructSetQuery(body))
     .then(({ result }) => {
-      return { deleted: result.n, ok: result.ok };
+      return { updated: result.nModified, ok: result.ok };
     });
 
 export const __deleteOneById = collection => id =>
