@@ -7,10 +7,15 @@ import validator from "express-joi-validator";
 
 import {
   handleRecordingUpload,
-  createRecordingOrThrow
+  createRecordingOrThrow,
+  updateRecording,
+  deleteRecording
 } from "server/controllers/recordings";
 
-import { apiPostRecordingSchema } from "domains/recording/schemas";
+import {
+  apiPostRecordingSchema,
+  apiUpdateRecordingSchema
+} from "domains/recording/schemas";
 
 const api = express();
 const jsonParser = bodyParser.json();
@@ -37,5 +42,26 @@ api.post(
       .catch(error => next(error));
   }
 );
+
+api.put(
+  "/:id",
+  jsonParser,
+  validator(apiUpdateRecordingSchema),
+  (req, res, next) => {
+    const { body, params } = req;
+
+    updateRecording(params.id, body)
+      .then(result => res.send(result))
+      .catch(error => next(error));
+  }
+);
+
+api.delete("/:id", (req, res, next) => {
+  const { id } = req.params;
+
+  deleteRecording(id)
+    .then(result => res.send(result))
+    .catch(error => next(error));
+});
 
 export default api;

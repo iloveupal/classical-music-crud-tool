@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 
 import _get from "lodash/get";
+import _pickBy from "lodash/pickBy";
 import boom from "boom";
 
 import { isAudioFile, getFilePath, getFileType } from "server/utils/file";
@@ -9,8 +10,7 @@ import { wrapResult } from "server/utils/api";
 import { safeObjectId } from "server/utils/database";
 
 import { findOneById as findMovementById } from "server/models/movements";
-
-import { create } from "server/models/recordings";
+import { create, updateOneById, deleteOneById } from "server/models/recordings";
 
 export function handleRecordingUpload(file) {
   if (!isAudioFile(file)) {
@@ -52,4 +52,26 @@ export function createRecordingOrThrow({ parent, performers, year }) {
     })
     .then(create)
     .then(wrapResult);
+}
+
+export function updateRecording(id, { performers, year }) {
+  return updateOneById(id, _pickBy({ performers, year })).then(
+    ({ updated, ok }) => {
+      if (!ok) {
+        return Promise.reject(boom.serverUnavailable());
+      }
+
+      return wrapResult({ updated, ok });
+    }
+  );
+}
+
+export function deleteRecording(id) {
+  return deleteOneById(id).then(({ deleted, ok }) => {
+    if (!ok) {
+      return Promise.reject(boom.serverUnavailable());
+    }
+
+    return wrapResult({ deleted, ok });
+  });
 }
