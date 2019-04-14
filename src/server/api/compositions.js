@@ -5,6 +5,7 @@ import { apiListCompositionsSchema } from "domains/composition/schemas";
 
 import {
   filterCompositions,
+  listCompositions,
   getCompositionOrThrow
 } from "server/controllers/compositions";
 
@@ -13,7 +14,12 @@ const api = express();
 api.get("/", validator(apiListCompositionsSchema), (req, res, next) => {
   const { query } = req;
 
-  filterCompositions(query)
+  const controllerFn =
+    query.search && Object.keys(query.search).length
+      ? filterCompositions
+      : listCompositions;
+
+  controllerFn(query)
     .then(results => res.send(results))
     .catch(error => next(error));
 });

@@ -34,7 +34,13 @@ export function getCompositionOrThrow(id) {
     .then(wrapResult);
 }
 
-export function filterCompositions({ offset, limit, sort, search = {} }) {
+export function listCompositions({ offset, limit }) {
+  return find()
+    .then(compositions => hydrateCompositions(compositions))
+    .then(wrapArrayResult({ offset, limit }));
+}
+
+export function filterCompositions({ offset, limit, search = {} }) {
   const { text, movement, key, performer, type, year } = search;
 
   return find(buildCompositionTextQuery(text))
