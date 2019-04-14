@@ -37,3 +37,9 @@ export function constructTextQuery(text) {
     }
   };
 }
+
+export function constructSetQuery(operations) {
+  return {
+    $set: operations
+  };
+}

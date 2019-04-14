@@ -4,7 +4,8 @@ import { get } from "server/ioc";
 import {
   safeObjectId,
   constructEqQuery,
-  constructAndQuery
+  constructAndQuery,
+  constructSetQuery
 } from "server/utils/database";
 import { find as findMovements, hydrateMovements } from "./movements";
 
@@ -32,6 +33,21 @@ export function find(query) {
 
 export function create(body) {
   return Compositions.insertOne(body).then(result => result.insertedId);
+}
+
+export function updateOneById(id, body) {
+  return Compositions.updateOne(
+    { _id: safeObjectId(id) },
+    constructSetQuery(body)
+  ).then(({ result }) => ({ written: result.nModified, ok: result.ok }));
+}
+
+export function deleteOneById(id) {
+  return Compositions.deleteOne({ _id: safeObjectId(id) }).then(
+    ({ result }) => {
+      return { deleted: result.n, ok: result.ok };
+    }
+  );
 }
 
 export function hydrateComposition(

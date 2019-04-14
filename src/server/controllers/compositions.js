@@ -1,3 +1,5 @@
+import _pickBy from "lodash/pickBy";
+
 import boom from "boom";
 
 import { wrapResult, wrapArrayResult } from "server/utils/api";
@@ -7,7 +9,9 @@ import {
   hydrateComposition,
   hydrateCompositions,
   find,
-  create
+  create,
+  updateOneById,
+  deleteOneById
 } from "server/models/compositions";
 
 import { buildTextQuery as buildCompositionTextQuery } from "server/models/query-builders/compositionQueryBuilders";
@@ -87,5 +91,33 @@ export function filterCompositions({ offset, limit, search = {} }) {
 }
 
 export function createCompositionOrThrow({ title, composer }) {
-  return create({ title, composer }).then(wrapResult);
+  return create({ title, composer }).then(id => {
+    if (!id) {
+      return Promise.reject(boom.serverUnavailable());
+    }
+
+    return wrapResult(id);
+  });
+}
+
+export function updateComposition(id, { title, composer }) {
+  return updateOneById(id, _pickBy({ title, composer })).then(
+    ({ written, ok }) => {
+      if (!ok) {
+        return Promise.reject(boom.serverUnavailable());
+      }
+
+      return wrapResult({ written, ok });
+    }
+  );
+}
+
+export function deleteComposition(id) {
+  return deleteOneById(id).then(({ deleted, ok }) => {
+    if (!ok) {
+      return Promise.reject(boom.serverUnavailable());
+    }
+
+    return wrapResult({ deleted, ok });
+  });
 }

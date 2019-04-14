@@ -5,14 +5,17 @@ import bodyParser from "body-parser";
 
 import {
   apiListCompositionsSchema,
-  apiPostCompositionSchema
+  apiPostCompositionSchema,
+  apiUpdateCompositionSchema
 } from "domains/composition/schemas";
 
 import {
   filterCompositions,
   listCompositions,
   getCompositionOrThrow,
-  createCompositionOrThrow
+  createCompositionOrThrow,
+  updateComposition,
+  deleteComposition
 } from "server/controllers/compositions";
 
 const api = express();
@@ -51,5 +54,24 @@ api.post(
       .catch(error => next(error));
   }
 );
+
+api.put(
+  "/:id",
+  jsonParser,
+  validator(apiUpdateCompositionSchema),
+  (req, res, next) => {
+    const { body, params } = req;
+
+    updateCompositionOrThrow(params.id, body)
+      .then(result => res.send(result))
+      .catch(error => next(error));
+  }
+);
+
+api.delete("/:id", (req, res, next) => {
+  const { params } = req;
+
+  deleteComposition(params.id).then(result => res.send(result));
+});
 
 export default api;

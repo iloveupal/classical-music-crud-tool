@@ -30,3 +30,10 @@ export const apiPostCompositionSchema = {
     composer: Joi.string()
   }
 };
+
+export const apiUpdateCompositionSchema = {
+  body: {
+    title: Joi.string(),
+    composer: Joi.string()
+  }
+};
