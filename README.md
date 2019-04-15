@@ -2,7 +2,7 @@
 
 a little tool to manage a classical music collection.
 
-### Requirements
+### Analyzing requirements
 
 I suppose that the purpose of this test assignment is to emulate a work on
 an internal tooling for Idagio. As for internal tooling, I thought
@@ -28,24 +28,44 @@ these features would be desired:
 
 ### Design
 
-- **Adding/editing a composition**
-  The app will have a create/update screen. Fields are:
-  _ Composer `string, required`
-  _ Title `string, required`
-  _ Movements `array` 1. Title `string` 2. Key `string` 3. Recordings `array`
-  _ Performers (name, type) `array` \* Year recorded `number`
-    
-   We should be able to upload music files in a batch.
-  Also we should check if the files are music files.
+**Adding/editing a composition**
 
-- **Listing compositions**
-  As someone who will be using this tool,
-  I would like to view all of my created compositions.
-    
-   Also, I would like to be able to: 1. Sort compositions by title, composer's name, added date. 2. Filter them by multiple criteria. As it is an internal tooling,
-  probably it would be good to be able to filter entities directly in the search field
-  with some smart query parsing. For example,
-  `Text=Bergamasque;Key=c_s_m;Year=1993`
+The app will have a create/update screen. Fields are:
+
+```
+Composer — string
+Title — string
+Movements — array
+    Title — string
+    Key — string
+    Recordings — array
+        Performers - array
+            Name - string
+            Type - string
+        Year - number
+```
+
+The flow as I see it is:
+
+1. User goes to Create screen.
+2. The composition entity is created.
+3. We can enter the title and composer's name
+4. We also can add a movement
+5. A movement entity will be created.
+6. We can enter movement's title and select the key
+7. We can add recordings to the movement
+8. To create a recording we should upload a file first.
+9. Artists and year will be automatically parsed for us
+10. We can repeat any of the steps before we call it done.
+
+**Listing compositions**
+
+The flow for the list screen as I see it:
+
+1. User can search for entities
+2. User can edit each of the compositions. it will redirect him to the Update screen.
+   which is the same as the Create screen.
+3. User can also delete the whole composition.
 
 ### Choosing fighters
 
@@ -132,8 +152,8 @@ Let's say we filter only by title.
 ```
 
 If we request for
-  
- text=moonlight;movement=allegretto
+
+text=moonlight;movement=allegretto
 
 ```javascript
     {
@@ -160,8 +180,8 @@ If we request for
 ```
 
 If we request for
-  
- text=moonlight;movement=allegretto;performer=perahia
+
+text=moonlight;movement=allegretto;performer=perahia
 
 ```javascript
     {
