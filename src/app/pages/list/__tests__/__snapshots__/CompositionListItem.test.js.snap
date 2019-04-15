@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CompositionListItem should match the snapshot 1`] = `
+<Card
+  className="composition-list-item"
+  extra={
+    <div>
+      <span
+        className="composition-list-item__edit-link"
+        onClick={[Function]}
+      >
+        Edit
+      </span>
+      <span
+        className="composition-list-item__delete-link"
+        onClick={[Function]}
+      >
+        Delete
+      </span>
+    </div>
+  }
+  title={
+    <div
+      className="composition-list-item__card-title"
+    >
+      <span
+        className="composition-list-item__title"
+      >
+        Symphony
+      </span>
+      <span
+        className="composition-list-item__composer"
+      >
+        Beethoven
+      </span>
+    </div>
+  }
+>
+  <MovementListItem
+    data={
+      Object {
+        "_id": "245",
+        "key": "c_s_m",
+        "recordings": Array [
+          Object {
+            "_id": "456",
+          },
+        ],
+        "title": "First",
+      }
+    }
+    key="245"
+  />
+</Card>
+`;

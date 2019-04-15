@@ -37,7 +37,7 @@
     "start:dev": "nodemon --inspect ./dist/server.js",
     "start:prod": "node ./dist/server.js",
     "test:server": "rm -rf dist && webpack --config webpack.server.test.config.js",
-    "test:app": "jest --config=./jest.config.frontend.js ./src/app/*",
+    "test:app": "jest --config=./jest.config.frontend.js ./src/app",
     "test-start:server": "node ./dist/server.js",
     "run-server-tests": "jest ./src/server/__tests__/index.test.js"
   },
@@ -56,6 +56,7 @@
     "css-loader": "^2.1.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
+    "enzyme-to-json": "^3.3.5",
     "file-loader": "^3.0.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",

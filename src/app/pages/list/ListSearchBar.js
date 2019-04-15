@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 
 import { Input } from "antd";
 
-const Search = Input.Search;
-
 import {
   SEARCH_STATUS_PROGRESS,
   SEARCH_STATUS_RESULTS,
   SEARCH_STATUS_NEW
 } from "app/pages/list/ListConstants";
+
+const Search = Input.Search;
 
 class ListSearchBar extends PureComponent {
   render() {

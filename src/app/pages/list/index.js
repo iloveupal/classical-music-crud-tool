@@ -124,12 +124,6 @@ export class ListPage extends PureComponent {
     const hasReachedBottom =
       e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
 
-    console.log(
-      e.target.scrollHeight,
-      e.target.scrollTop,
-      e.target.clientHeight
-    );
-
     if (hasReachedBottom) {
       this._handleLoadMore();
     }

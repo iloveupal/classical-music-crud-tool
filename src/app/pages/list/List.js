@@ -13,7 +13,7 @@ import "./styles/list.less";
 class List extends PureComponent {
   _renderResults(Component) {
     return (
-      <div className={"compositions-list"} onScroll={this._handleScroll}>
+      <div className={"compositions-list"}>
         {this.props.items.map(item => {
           return (
             <Component
