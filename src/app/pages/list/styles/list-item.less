@@ -1,0 +1,52 @@
+@import "~public/styles/colors.less";
+@import "~public/styles/mixins.less";
+
+.link() {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.composition-list-item {
+  margin-bottom: 15px;
+
+  &__card-title {
+    .column();
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: 15px;
+    margin-right: 5px;
+  }
+
+  &__title-empty {
+    font-size: 15px;
+    margin-right: 5px;
+    color: @ui-color-grey;
+  }
+
+  &__composer {
+    font-weight: 400;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  &__edit-link {
+    .link();
+    color: @ui-color-blue;
+    margin-right: 15px;
+  }
+
+  &__delete-link {
+    .link();
+    color: @ui-color-red;
+  }
+
+  &__no-movements {
+    font-size: 12px;
+    font-style: italic;
+    color: @ui-color-grey;
+  }
+}

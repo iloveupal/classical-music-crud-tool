@@ -20,9 +20,20 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js(x?)$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: "babel-loader",
+        options: {
+          presets: ["@babel/preset-env", "@babel/preset-react"],
+          plugins: [
+            "@babel/plugin-syntax-dynamic-import",
+            "@babel/plugin-proposal-class-properties",
+            [
+              "import",
+              { libraryName: "antd", libraryDirectory: "es", style: "css" }
+            ]
+          ]
+        }
       },
       {
         test: /\.html$/,
@@ -68,9 +79,6 @@ module.exports = {
     })
   ],
   optimization: {
-    splitChunks: {
-      chunks: "all"
-    },
     minimizer: [
       new UglifyJsPlugin({
         cache: true,
@@ -82,8 +90,11 @@ module.exports = {
   },
   resolve: {
     alias: {
-      Framework: path.resolve(__dirname, "src/framework"),
-      domains: path.resolve(__dirname, "src/domains")
+      framework: path.resolve(__dirname, "src/framework"),
+      domains: path.resolve(__dirname, "src/domains"),
+      public: path.resolve(__dirname, "src/public"),
+      app: path.resolve(__dirname, "src/app"),
+      joi: "joi-browser"
     }
   }
 };

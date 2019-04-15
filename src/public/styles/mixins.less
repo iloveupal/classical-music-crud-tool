@@ -1,0 +1,23 @@
+.flex1() {
+  flex: 1;
+}
+
+.flex() {
+  display: flex;
+}
+
+.row() {
+  .flex();
+  flex-flow: row nowrap;
+}
+
+.column() {
+  .flex();
+  flex-flow: column nowrap;
+}
+
+.center() {
+  .row();
+  justify-content: center;
+  align-items: center;
+}
