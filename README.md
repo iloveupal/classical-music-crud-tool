@@ -86,6 +86,19 @@ The flow for the list screen as I see it:
 5. For tests, we'll use **jest**.
    It has a clean api and it has integrations with technologies that we are using.
 
+### Approach
+
+I used a simple architecture for the node.js app.
+
+`Routes -> Controllers -> Models.`
+
+In my opinion, this model is very flexible: if we have more entities, the
+framework is rather simple: create a new routes directory, a new controller,
+a new model. If we need some heavy features, we can start adding
+services. I've also tried (not sure if I managed to) to maintain freedom from the database by
+encapsulating any database-related code.
+To ensure quality, I tested the backend as a whole.
+
 ### API
 
 #### READ
