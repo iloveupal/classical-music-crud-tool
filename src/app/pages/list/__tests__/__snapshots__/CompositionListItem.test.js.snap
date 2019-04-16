@@ -5,18 +5,19 @@ exports[`CompositionListItem should match the snapshot 1`] = `
   className="composition-list-item"
   extra={
     <div>
-      <span
+      <ColorLink
         className="composition-list-item__edit-link"
         onClick={[Function]}
+        type="primary"
       >
         Edit
-      </span>
-      <span
-        className="composition-list-item__delete-link"
+      </ColorLink>
+      <ColorLink
         onClick={[Function]}
+        type="danger"
       >
         Delete
-      </span>
+      </ColorLink>
     </div>
   }
   title={

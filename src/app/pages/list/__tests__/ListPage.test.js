@@ -15,6 +15,7 @@ describe("ListPage", () => {
     const wrapper = shallow(
       <ListPage
         onGetCompositions={onGetCompositions}
+        onEditComposition={jest.fn()}
         onDeleteComposition={jest.fn()}
         onDisplayError={jest.fn()}
       />
@@ -62,6 +63,7 @@ describe("ListPage", () => {
     const wrapper = shallow(
       <ListPage
         onGetCompositions={onGetCompositions}
+        onEditComposition={jest.fn()}
         onDeleteComposition={jest.fn()}
         onDisplayError={jest.fn()}
       />
@@ -87,6 +89,7 @@ describe("ListPage", () => {
         onGetCompositions={jest.fn(() =>
           Promise.resolve({ count: 0, result: [], errors: [] })
         )}
+        onEditComposition={jest.fn()}
         onDeleteComposition={onDelete}
         onDisplayError={jest.fn()}
       />
@@ -135,6 +138,7 @@ describe("ListPage", () => {
     const wrapper = shallow(
       <ListPage
         onGetCompositions={onGetCompositions}
+        onEditComposition={jest.fn()}
         onDeleteComposition={jest.fn()}
         onDisplayError={jest.fn()}
       />
@@ -181,6 +185,7 @@ describe("ListPage", () => {
     const wrapper = shallow(
       <ListPage
         onGetCompositions={onGetCompositions}
+        onEditComposition={jest.fn()}
         onDeleteComposition={jest.fn()}
         onDisplayError={jest.fn()}
       />

@@ -226,8 +226,7 @@ EditorPage.propTypes = {
   onDeleteMovement: PropTypes.func.isRequired,
   onCreateRecording: PropTypes.func.isRequired,
   onUpdateRecording: PropTypes.func.isRequired,
-  onDeleteRecording: PropTypes.func.isRequired,
-  onFinish: PropTypes.func.isRequired
+  onDeleteRecording: PropTypes.func.isRequired
 };
 
 export default withProps(props => ({
@@ -241,6 +240,5 @@ export default withProps(props => ({
   onDeleteMovement: deleteMovement,
   onCreateRecording: createRecording,
   onUpdateRecording: updateRecording,
-  onDeleteRecording: deleteRecording,
-  onFinish: () => props.history.replace(createViewLink(), {})
+  onDeleteRecording: deleteRecording
 }))(EditorPage);
