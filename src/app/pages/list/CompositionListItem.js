@@ -12,6 +12,7 @@ import {
 import MovementListItem from "./MovementListItem";
 
 import "./styles/list-item.less";
+import { ColorLink } from "app/ui/link";
 
 function renderTitle({ title, composer }) {
   return (
@@ -32,18 +33,17 @@ function renderTitle({ title, composer }) {
 function renderExtra({ onDelete, onEdit, id }) {
   return (
     <div>
-      <span
-        onClick={() => onEdit(id)}
+      <ColorLink
+        type={"primary"}
         className={"composition-list-item__edit-link"}
+        onClick={() => onEdit(id)}
       >
         Edit
-      </span>
-      <span
-        onClick={() => onDelete(id)}
-        className={"composition-list-item__delete-link"}
-      >
+      </ColorLink>
+
+      <ColorLink type={"danger"} onClick={() => onDelete(id)}>
         Delete
-      </span>
+      </ColorLink>
     </div>
   );
 }

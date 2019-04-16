@@ -1,3 +1,4 @@
+@import "~public/styles/mixins.less";
 @import "~public/styles/colors.less";
 
 .link() {
@@ -13,10 +14,34 @@
 
   height: 100vh;
   overflow-y: scroll;
-}
 
-.delete-link {
-  color: @ui-color-red;
+  &__status {
+    height: 80px;
+    .row();
+    .align-center();
 
-  .link();
+    &-updating {
+      height: 36px;
+      padding: 0 15px;
+      border-radius: 18px;
+      .row();
+      .align-center();
+
+      background-color: lighten(@ui-color-red, 40%);
+      color: darken(@ui-color-red, 20%);
+    }
+
+    &-synced {
+      height: 36px;
+      padding: 0 15px;
+      border-radius: 18px;
+      .row();
+      .align-center();
+
+      background-color: lighten(@ui-color-green, 40%);
+      color: darken(@ui-color-green, 20%);
+
+      transition: opacity 2s;
+    }
+  }
 }

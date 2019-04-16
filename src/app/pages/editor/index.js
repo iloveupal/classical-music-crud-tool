@@ -19,8 +19,7 @@ import {
 import {
   createRecording,
   deleteRecording,
-  updateRecording,
-  uploadRecording
+  updateRecording
 } from "app/api/recordings";
 
 import {
@@ -34,11 +33,15 @@ import {
   EDITOR_ENTITY_RECORDING
 } from "./EditorConstants";
 
+import changeReducer from "app/pages/editor/state-reducers/change";
+import createReducer from "app/pages/editor/state-reducers/create";
+import deleteReducer from "app/pages/editor/state-reducers/delete";
+
 import { createViewLink } from "app/utils/router";
 
 import Loading from "app/ui/loading";
 import EditorErrorsList from "./EditorErrorsList";
-import EditorForm from "./EditorForm";
+import EditorForm from "./forms/EditorForm";
 
 import "./styles/style.less";
 
@@ -111,11 +114,7 @@ export class EditorPage extends PureComponent {
 
     updateFn({ id, ...updateObj }).then(({ result, success, errors }) => {
       if (success) {
-        this._finishUpdating({
-          entity,
-          updateObj,
-          id
-        });
+        this.setState(changeReducer({ entity, updateObj, id }));
       } else {
         this._setErrors(errors);
       }
@@ -139,10 +138,12 @@ export class EditorPage extends PureComponent {
 
     deleteFn({ id }).then(({ result, success, errors }) => {
       if (success) {
-        this._finishDeleting({
-          entity,
-          id
-        });
+        this.setState(
+          deleteReducer({
+            entity,
+            id
+          })
+        );
       } else {
         this._setErrors(errors);
       }
@@ -164,140 +165,17 @@ export class EditorPage extends PureComponent {
 
     createFn({ parent: parent._id }).then(({ result, success, errors }) => {
       if (success) {
-        this._finishCreating({
-          entity,
-          id: result,
-          parent: parent._id
-        });
+        this.setState(
+          createReducer({
+            entity,
+            id: result,
+            parent: parent._id
+          })
+        );
       } else {
         this._setErrors(errors);
       }
     });
-  };
-
-  _finishCreating = ({ entity, id, parent }) => {
-    if (entity === EDITOR_ENTITY_MOVEMENT) {
-      this.setState(prevState => ({
-        composition: {
-          ...prevState.composition,
-          movements: (prevState.composition.movements || []).concat([
-            {
-              _id: id,
-              parent
-            }
-          ])
-        },
-        status: EDITOR_STATUS_SYNCED
-      }));
-    }
-
-    if (entity === EDITOR_ENTITY_RECORDING) {
-      this.setState(prevState => ({
-        composition: {
-          ...prevState.composition,
-          movements: prevState.composition.movements.map(movement => {
-            if (movement._id !== parent) {
-              return movement;
-            }
-
-            return {
-              ...movement,
-              recordings: (movement.recordings || []).concat([
-                {
-                  _id: id,
-                  parent
-                }
-              ])
-            };
-          })
-        },
-        status: EDITOR_STATUS_SYNCED
-      }));
-    }
-  };
-
-  _finishDeleting = ({ entity, id }) => {
-    if (entity === EDITOR_ENTITY_MOVEMENT) {
-      this.setState(prevState => ({
-        composition: {
-          ...prevState.composition,
-          movements: prevState.composition.movements.filter(
-            ({ _id }) => _id !== id
-          )
-        },
-        status: EDITOR_STATUS_SYNCED
-      }));
-    }
-
-    if (entity === EDITOR_ENTITY_RECORDING) {
-      this.setState(prevState => ({
-        composition: {
-          ...prevState.composition,
-          movements: prevState.composition.movements.map(movement => {
-            return {
-              ...movement,
-              recordings: movement.recordings.filter(({ _id }) => _id !== id)
-            };
-          })
-        },
-        status: EDITOR_STATUS_SYNCED
-      }));
-    }
-  };
-
-  _finishUpdating = ({ entity, updateObj, id }) => {
-    if (entity === EDITOR_ENTITY_COMPOSITION) {
-      this.setState(prevState => ({
-        composition: {
-          ...prevState.composition,
-          ...updateObj
-        },
-        status: EDITOR_STATUS_SYNCED
-      }));
-    }
-
-    if (entity === EDITOR_ENTITY_MOVEMENT) {
-      this.setState(prevState => ({
-        composition: {
-          ...prevState.composition,
-          movements: prevState.composition.movements.map(movement => {
-            if (movement._id !== id) {
-              return movement;
-            }
-
-            return {
-              ...movement,
-              ...updateObj
-            };
-          })
-        },
-        status: EDITOR_STATUS_SYNCED
-      }));
-    }
-
-    if (entity === EDITOR_ENTITY_RECORDING) {
-      this.setState(prevState => ({
-        composition: {
-          ...prevState.composition,
-          movements: prevState.composition.movements.map(movement => {
-            return {
-              ...movement,
-              recordings: movement.recordings.map(recording => {
-                if (recording._id !== id) {
-                  return recording;
-                }
-
-                return {
-                  ...recording,
-                  ...updateObj
-                };
-              })
-            };
-          })
-        },
-        status: EDITOR_STATUS_SYNCED
-      }));
-    }
   };
 
   render() {
@@ -305,6 +183,19 @@ export class EditorPage extends PureComponent {
 
     return (
       <div className={"pages-editor-container"}>
+        <div className={"pages-editor-container__status"}>
+          {status === EDITOR_STATUS_UPDATING && (
+            <span className={"pages-editor-container__status-updating"}>
+              Updating...
+            </span>
+          )}
+          {status === EDITOR_STATUS_SYNCED && (
+            <span className={"pages-editor-container__status-synced"}>
+              Everything in sync
+            </span>
+          )}
+        </div>
+
         {(status === EDITOR_STATUS_LOADED ||
           status === EDITOR_STATUS_UPDATING ||
           status === EDITOR_STATUS_SYNCED) && (

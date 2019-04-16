@@ -35,7 +35,7 @@ export const getApiRecordingUploadUrl = id => `/api/recordings/upload`;
 
 export function deleteRecording({ id }) {
   return axios({
-    url: getApiRecordingUploadUrl(id),
+    url: `/api/recordings/${id}`,
     method: "delete"
   }).then(({ data }) => data);
 }

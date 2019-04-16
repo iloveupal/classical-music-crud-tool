@@ -5,9 +5,6 @@ import PropTypes from "prop-types";
 
 import { Typography } from "antd";
 
-import Input from "./helpers/InputSlow";
-import FormInput from "./helpers/FormInput";
-
 import {
   getComposer,
   getMovements,
@@ -19,10 +16,13 @@ import {
   EDITOR_ENTITY_MOVEMENT
 } from "app/pages/editor/EditorConstants";
 
-import MovementEditorForm from "./MovementEditorForm";
-import AddMovementButton from "./buttons/AddMovementButton";
+import Input from "app/pages/editor/helpers/InputSlow";
+import FormInput from "app/pages/editor/helpers/FormInput";
 
-import "./styles/editor-form.less";
+import MovementEditorForm from "app/pages/editor/forms/MovementEditorForm";
+import AddMovementButton from "app/pages/editor/buttons/AddMovementButton";
+
+import "app/pages/editor/styles/editor-form.less";
 
 const { Title } = Typography;
 

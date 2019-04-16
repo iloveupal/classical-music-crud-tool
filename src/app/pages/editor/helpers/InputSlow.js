@@ -8,6 +8,8 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Input, InputNumber } from "antd";
 
+const DEBOUNCE_TIME = 1500;
+
 class InputSlow extends PureComponent {
   constructor(props) {
     super(props);
@@ -27,7 +29,7 @@ class InputSlow extends PureComponent {
 
   _triggerSendEvent = _debounce(() => {
     this.props.onChange(this.state.value);
-  }, 1500);
+  }, DEBOUNCE_TIME);
 
   _handleChange = event => {
     const newVal = event.target.value;

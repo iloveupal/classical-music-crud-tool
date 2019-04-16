@@ -1,27 +1,27 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
-import { Typography, Select } from "antd";
-
-import Input from "./helpers/InputSlow";
-import FormInput from "./helpers/FormInput";
+import { Select } from "antd";
 
 import { AVAILABLE_KEYS } from "framework/constants/keys";
-
-import { getTitle, getKey, getRecordings } from "domains/movement/propGetters";
-import { renderKey } from "domains/movement/utils";
 
 import {
   EDITOR_ENTITY_MOVEMENT,
   EDITOR_ENTITY_RECORDING
-} from "./EditorConstants";
+} from "app/pages/editor/EditorConstants";
 
-import RecordingEditorForm from "app/pages/editor/RecordingEditorForm";
+import { getTitle, getKey, getRecordings } from "domains/movement/propGetters";
+import { renderKey } from "domains/movement/utils";
+
+import { ColorLink } from "app/ui/link";
+import FormInput from "app/pages/editor/helpers/FormInput";
+import Input from "app/pages/editor/helpers/InputSlow";
+
+import RecordingEditorForm from "app/pages/editor/forms/RecordingEditorForm";
 import AddRecordingButton from "app/pages/editor/buttons/AddRecordingButton";
 
-import "./styles/movements-form.less";
+import "app/pages/editor/styles/movements-form.less";
 
-const { Title } = Typography;
 const { Option } = Select;
 
 class MovementEditorForm extends PureComponent {
@@ -36,12 +36,12 @@ class MovementEditorForm extends PureComponent {
       <div className={"editor-page-movements-form"}>
         <div className={"editor-page-movements-form__header"}>
           {`${index + 1}.`}
-          <span
-            className={"delete-link"}
+          <ColorLink
+            type={"danger"}
             onClick={onDelete(EDITOR_ENTITY_MOVEMENT, data)}
           >
             Delete
-          </span>
+          </ColorLink>
         </div>
         <FormInput name={"Title"}>
           <Input
@@ -82,9 +82,11 @@ class MovementEditorForm extends PureComponent {
               );
             })}
 
-            <AddRecordingButton
-              onClick={onCreate(EDITOR_ENTITY_RECORDING, data)}
-            />
+            <div className={"editor-page-movements-form__add-recording"}>
+              <AddRecordingButton
+                onClick={onCreate(EDITOR_ENTITY_RECORDING, data)}
+              />
+            </div>
           </div>
         </FormInput>
       </div>

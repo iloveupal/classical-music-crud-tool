@@ -10,12 +10,13 @@ import {
   RECORDING_MINIMAL_YEAR
 } from "domains/recording/constants";
 
-import FormInput from "./helpers/FormInput";
-import InputSlow from "./helpers/InputSlow";
-import ArrayInput from "./helpers/ArrayInput";
+import { ColorLink } from "app/ui/link";
+import FormInput from "app/pages/editor/helpers/FormInput";
+import InputSlow from "app/pages/editor/helpers/InputSlow";
+import ArrayInput from "app/pages/editor/helpers/ArrayInput";
 import UploadRecordingButton from "app/pages/editor/buttons/UploadRecordingButton";
 
-import "./styles/recordings-form.less";
+import "app/pages/editor/styles/recordings-form.less";
 
 class RecordingEditorForm extends PureComponent {
   _handleRecordingUploaded = metadata => {
@@ -51,12 +52,12 @@ class RecordingEditorForm extends PureComponent {
       <div>
         <div className={"recordings-editor-form__header"}>
           {`${index + 1}.`}
-          <span
-            className={"delete-link"}
+          <ColorLink
+            type={"danger"}
             onClick={onDelete(EDITOR_ENTITY_RECORDING, data)}
           >
             Delete
-          </span>
+          </ColorLink>
         </div>
         <UploadRecordingButton
           recordingId={data._id}

@@ -1,13 +1,6 @@
 @import "~public/styles/colors.less";
 @import "~public/styles/mixins.less";
 
-.link() {
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
 .composition-list-item {
   margin-bottom: 15px;
 
@@ -34,14 +27,7 @@
   }
 
   &__edit-link {
-    .link();
-    color: @ui-color-blue;
     margin-right: 15px;
-  }
-
-  &__delete-link {
-    .link();
-    color: @ui-color-red;
   }
 
   &__no-movements {

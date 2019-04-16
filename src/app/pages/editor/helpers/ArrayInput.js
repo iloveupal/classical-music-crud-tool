@@ -13,6 +13,7 @@ import InputSlow from "./InputSlow";
 
 import "./styles/array-input.less";
 import { EDITOR_ENTITY_MOVEMENT } from "app/pages/editor/EditorConstants";
+import { ColorLink } from "app/ui/link";
 
 class ArrayInput extends PureComponent {
   constructor(props) {
@@ -78,12 +79,10 @@ class ArrayInput extends PureComponent {
             <div key={index} className={"editor-page-array-input__item"}>
               <div className={"editor-page-array-input__item-header"}>
                 {`${index + 1}.`}
-                <span
-                  className={"delete-link"}
-                  onClick={this._handleDelete(index)}
-                >
+
+                <ColorLink type={"danger"} onClick={this._handleDelete(index)}>
                   Delete
-                </span>
+                </ColorLink>
               </div>
               {fields.map(field => {
                 return (
