@@ -1,7 +1,22 @@
+@import "~public/styles/colors.less";
+
+.link() {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .pages-editor-container {
   flex: 1;
   padding: 20px 20px 0 20px;
 
   height: 100vh;
   overflow-y: scroll;
+}
+
+.delete-link {
+  color: @ui-color-red;
+
+  .link();
 }

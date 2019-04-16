@@ -1,10 +1,15 @@
 import Joi from "joi";
 
+import {
+  RECORDING_MAXIMAL_YEAR,
+  RECORDING_MINIMAL_YEAR
+} from "domains/recording/constants";
+
 export const apiPostRecordingSchema = {
   post: {
     year: Joi.number()
-      .min(1500)
-      .max(new Date().getFullYear()),
+      .min(RECORDING_MINIMAL_YEAR)
+      .max(RECORDING_MAXIMAL_YEAR),
     performers: Joi.array().items(
       Joi.object({
         name: Joi.string(),
@@ -18,8 +23,8 @@ export const apiPostRecordingSchema = {
 export const apiUpdateRecordingSchema = {
   post: {
     year: Joi.number()
-      .min(1500)
-      .max(new Date().getFullYear()),
+      .min(RECORDING_MINIMAL_YEAR)
+      .max(RECORDING_MAXIMAL_YEAR),
     performers: Joi.array().items(
       Joi.object({
         name: Joi.string(),

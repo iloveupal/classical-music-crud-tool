@@ -20,7 +20,7 @@ class EditorErrorsList extends PureComponent {
 }
 
 EditorErrorsList.propTypes = {
-  errors: PropTypes.array.isRequired
+  errors: PropTypes.array
 };
 
 export default EditorErrorsList;

@@ -1,5 +1,9 @@
 import Joi from "joi";
 import { AVAILABLE_KEYS } from "framework/constants/keys";
+import {
+  RECORDING_MAXIMAL_YEAR,
+  RECORDING_MINIMAL_YEAR
+} from "domains/recording/constants";
 
 export const compositionsFilterSchema = {
   text: Joi.string(),
@@ -8,8 +12,8 @@ export const compositionsFilterSchema = {
   performer: Joi.string(),
   type: Joi.string(),
   year: Joi.number()
-    .min(1500)
-    .max(new Date().getFullYear())
+    .min(RECORDING_MINIMAL_YEAR)
+    .max(RECORDING_MAXIMAL_YEAR)
 };
 
 export const apiListCompositionsSchema = {

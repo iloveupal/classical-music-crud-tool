@@ -77,7 +77,7 @@ export class ListPage extends PureComponent {
       status: SEARCH_STATUS_RESULTS,
       isFinished: prevState.result.length + result.length >= count,
       offset: prevState.offset + result.length,
-      result: prevState.result.concat(result)
+      result: (prevState.result || []).concat(result)
     }));
   };
 
