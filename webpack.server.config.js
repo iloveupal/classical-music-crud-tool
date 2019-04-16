@@ -1,6 +1,7 @@
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const WebpackShellPlugin = require("webpack-shell-plugin");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = (env, argv) => ({
   entry: {
@@ -46,6 +47,12 @@ module.exports = (env, argv) => ({
       onBuildEnd: [
         argv.mode === "production" ? "echo Server built!" : "yarn start:dev"
       ]
+    }),
+    new Dotenv({
+      path:
+        argv.mode === "development"
+          ? "./env/.development.env"
+          : "./env/.production.env"
     })
   ]
 });

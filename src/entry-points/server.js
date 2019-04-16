@@ -4,8 +4,8 @@ import path from "path";
 import getDb from "server/bin/database";
 import { store } from "server/ioc";
 
-const DATABASE_URL = "mongodb://localhost:27017";
-const DATABASE_NAME = "idagio";
+const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_NAME = process.env.DATABASE_NAME;
 
 getDb(DATABASE_URL, DATABASE_NAME)
   .then(db => {
