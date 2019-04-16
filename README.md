@@ -2,7 +2,7 @@
 
 a little tool to manage a classical music collection.
 
-#### Guide
+### Guide
 
 To start:
 
@@ -35,7 +35,7 @@ yarn test:server
 yarn test:app
 ```
 
-#### Analyzing requirements
+### Analyzing requirements
 
 I suppose that the purpose of this test assignment is to emulate a work on
 an internal tooling for Idagio. As for internal tooling, I thought
@@ -59,7 +59,7 @@ these features would be desired:
   I would like to have the metadata be automatically parsed
   for me, with an ability to correct it, of course.
 
-#### Design
+### Design
 
 **Adding/editing a composition**
 
@@ -100,7 +100,7 @@ The flow for the list screen as I see it:
    which is the same as the Create screen.
 3. User can also delete the whole composition.
 
-#### Choosing stack
+### Choosing stack
 
 1. For the frontend, **React** seems a perfect choice. Opposed
    to jQuery-driven development, it is much easier to maintain scalability and clean code. Also the community is huge.
@@ -119,7 +119,7 @@ The flow for the list screen as I see it:
 5. For tests, we'll use **jest**.
    It has a clean api and it has integrations with technologies that we are using.
 
-#### Approach
+### Approach
 
 **Backend**
 
@@ -154,7 +154,7 @@ more freedom, easy inserts and updates. However, search and get turned out
 a little bit complicated. I think, further optimization can be done with
 \$lookup aggregation.
 
-#### Summary
+### Summary
 
 I spend about 3 working days to complete this assignment.
 
@@ -166,9 +166,9 @@ Things I would like to improve:
 - some higher api abstraction for the form handling.
 - more keep-it-simple-stupid.
 
-#### API
+### API
 
-##### READ
+#### READ
 
 Now that we've designed the requirements, we can proceed to api.
 
@@ -314,7 +314,7 @@ Gets the whole composition with its movements and recordings.
 }
 ```
 
-##### DELETE
+#### DELETE
 
 **`DELETE /compositions/:id`**
 
@@ -336,7 +336,7 @@ All entity deletion requests return
 }
 ```
 
-##### UPDATE
+#### UPDATE
 
 **`PUT /compositions/:id`**
 
@@ -376,7 +376,7 @@ All entity update requests return
 }
 ```
 
-##### CREATE
+#### CREATE
 
 **`POST /compositions`**
 
