@@ -17,10 +17,13 @@ class App extends PureComponent {
             <Link to={"/view"}>View</Link>
           </Sidebar>
 
-          <Route path={"/view"} component={() => <AsyncPage page={"list"} />} />
           <Route
-            path={"/editor"}
-            component={() => <AsyncPage page={"editor"} />}
+            path={"/view"}
+            component={props => <AsyncPage page={"list"} {...props} />}
+          />
+          <Route
+            path={"/editor/:id?"}
+            component={props => <AsyncPage page={"editor"} {...props} />}
           />
         </MainContainer>
       </Router>

@@ -7,6 +7,7 @@ import { withProps } from "recompose";
 import { message } from "antd";
 
 import { deleteComposition, listCompositions } from "app/api/compositions";
+import { createEditorLink } from "app/utils/router";
 
 import { parseSearchString, buildFiltersKey } from "./ListUtils";
 
@@ -97,7 +98,9 @@ export class ListPage extends PureComponent {
       .then(this._handleResponse);
   }, 1000);
 
-  _handleEditItem = id => {};
+  _handleEditItem = id => {
+    this.props.onEditComposition(id);
+  };
 
   _handleDeleteItem = id => {
     this.props.onDeleteComposition({ id }).then(({ success, errors }) => {
@@ -149,12 +152,14 @@ export class ListPage extends PureComponent {
 
 ListPage.propTypes = {
   onGetCompositions: PropTypes.func.isRequired,
+  onEditComposition: PropTypes.func.isRequired,
   onDeleteComposition: PropTypes.func.isRequired,
   onDisplayError: PropTypes.func.isRequired
 };
 
-export default withProps({
+export default withProps(props => ({
   onGetCompositions: listCompositions,
   onDeleteComposition: deleteComposition,
-  onDisplayError: error => message.warn(error.message)
-})(ListPage);
+  onDisplayError: error => message.warn(error.message),
+  onEditComposition: id => props.history.push(createEditorLink(id), {})
+}))(ListPage);
