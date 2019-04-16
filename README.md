@@ -2,7 +2,40 @@
 
 a little tool to manage a classical music collection.
 
-### Analyzing requirements
+#### Guide
+
+To start:
+
+```
+git clone https://github.com/iloveupal/classical-music-crud-tool.git
+cd classical-music-crud-tool
+
+yarn
+```
+
+You can start a dev environment by (you'll have to have mongo up and running on 27017)
+
+```
+yarn dev
+```
+
+Or you can build and it should start working automatically.
+
+```
+yarn prod
+docker-compose up
+```
+
+By default, 8080 port is used.
+
+To run tests:
+
+```
+yarn test:server
+yarn test:app
+```
+
+#### Analyzing requirements
 
 I suppose that the purpose of this test assignment is to emulate a work on
 an internal tooling for Idagio. As for internal tooling, I thought
@@ -26,7 +59,7 @@ these features would be desired:
   I would like to have the metadata be automatically parsed
   for me, with an ability to correct it, of course.
 
-### Design
+#### Design
 
 **Adding/editing a composition**
 
@@ -67,7 +100,7 @@ The flow for the list screen as I see it:
    which is the same as the Create screen.
 3. User can also delete the whole composition.
 
-### Choosing fighters
+#### Choosing stack
 
 1. For the frontend, **React** seems a perfect choice. Opposed
    to jQuery-driven development, it is much easier to maintain scalability and clean code. Also the community is huge.
@@ -86,7 +119,9 @@ The flow for the list screen as I see it:
 5. For tests, we'll use **jest**.
    It has a clean api and it has integrations with technologies that we are using.
 
-### Approach
+#### Approach
+
+**Backend**
 
 I used a simple architecture for the node.js app.
 
@@ -99,9 +134,41 @@ services. I've also tried (not sure if I managed to) to maintain freedom from th
 encapsulating any database-related code.
 To ensure quality, I tested the backend as a whole.
 
-### API
+**Frontend**
 
-#### READ
+For the frontend I decided not to pick redux this time: the app is small,
+no data is being used in different parts of the app.
+
+I used a simple architecture for this app: just a simple router with few pages.
+Possibly, because I was trying to keep-it-simple-stupid. Of course, this can be
+grouped by feature for better scalability.
+
+I wrote a few tests for the root components of the pages because they do the
+heavy-lifting logic-wise. In a real project, I would also add snapshot testing
+as well.
+
+**Database**
+
+I used a normalized data structure for the app because I think that gives us
+more freedom, easy inserts and updates. However, search and get turned out
+a little bit complicated. I think, further optimization can be done with
+\$lookup aggregation.
+
+#### Summary
+
+I spend about 3 working days to complete this assignment.
+
+Things I would like to improve:
+
+- a better search and get database query.
+- a less crappy design.
+- perform end-to-end api tests in a more elegant way.
+- some higher api abstraction for the form handling.
+- more keep-it-simple-stupid.
+
+#### API
+
+##### READ
 
 Now that we've designed the requirements, we can proceed to api.
 
@@ -247,7 +314,7 @@ Gets the whole composition with its movements and recordings.
 }
 ```
 
-#### DELETE
+##### DELETE
 
 **`DELETE /compositions/:id`**
 
@@ -269,7 +336,7 @@ All entity deletion requests return
 }
 ```
 
-#### UPDATE
+##### UPDATE
 
 **`PUT /compositions/:id`**
 
@@ -309,7 +376,7 @@ All entity update requests return
 }
 ```
 
-#### CREATE
+##### CREATE
 
 **`POST /compositions`**
 
